@@ -1,52 +1,97 @@
-import { useEffect } from "react";
+import { useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import OptimizerPage from "./pages/OptimizerPage";
+import DashboardPage from "./pages/DashboardPage";
+import { Toaster } from "@/components/ui/sonner";
+import { Leaf } from "lucide-react";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
-
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
-
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
-
+const Navbar = () => {
+  const location = useLocation();
+  
+  const isActive = (path) => location.pathname === path;
+  
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
-    </div>
+    <nav className="bg-white/80 backdrop-blur-md border-b border-green-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center transform group-hover:scale-110 transition-transform duration-300">
+              <Leaf className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-gray-800" style={{fontFamily: 'Space Grotesk, sans-serif'}}>GreenerCart</span>
+          </Link>
+          
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              data-testid="nav-home-link"
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${
+                isActive('/')
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                  : 'text-gray-600 hover:bg-green-50'
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/optimizer"
+              data-testid="nav-optimizer-link"
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${
+                isActive('/optimizer')
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                  : 'text-gray-600 hover:bg-green-50'
+              }`}
+            >
+              Optimizer
+            </Link>
+            <Link
+              to="/dashboard"
+              data-testid="nav-dashboard-link"
+              className={`px-5 py-2 rounded-full font-medium transition-all duration-300 ${
+                isActive('/dashboard')
+                  ? 'bg-green-500 text-white shadow-lg shadow-green-500/30'
+                  : 'text-gray-600 hover:bg-green-50'
+              }`}
+            >
+              Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="bg-gradient-to-r from-green-50 to-emerald-50 border-t border-green-100 mt-20">
+      <div className="max-w-7xl mx-auto px-6 py-8 text-center">
+        <p className="text-gray-600" style={{fontFamily: 'Inter, sans-serif'}}>
+          © 2025 GreenerCart – Built for RegenHack VR 2.0
+        </p>
+        <p className="text-sm text-gray-500 mt-2">
+          Making e-commerce sustainable, one delivery at a time 🌍
+        </p>
+      </div>
+    </footer>
   );
 };
 
 function App() {
   return (
-    <div className="App">
+    <div className="App min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
       <BrowserRouter>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/optimizer" element={<OptimizerPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
+      <Toaster />
     </div>
   );
 }
