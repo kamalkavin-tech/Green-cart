@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
+import Calculator from "../components/Calculator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -64,6 +65,12 @@ const OptimizerPage = () => {
         </p>
       </div>
       
+      {/* CO2 Calculator Section */}
+      <div className="mb-16">
+        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Calculate CO₂ Footprint</h2>
+        <Calculator />
+      </div>
+
       <div className="grid md:grid-cols-2 gap-8">
         {/* Form Section */}
         <Card className="eco-card">
